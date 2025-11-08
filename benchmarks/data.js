@@ -1,39 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1762605672254,
+  "lastUpdate": 1762625471400,
   "repoUrl": "https://github.com/czlonkowski/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "56956555+czlonkowski@users.noreply.github.com",
-            "name": "Romuald Członkowski",
-            "username": "czlonkowski"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "08d43bd7fb816e1abb60595e1ccf0ee56318cee3",
-          "message": "Merge pull request #290 from czlonkowski/feature/telemetry-docker-cloud-detection\n\nfeat: add Docker/cloud environment detection to telemetry (v2.18.1)",
-          "timestamp": "2025-10-08T14:30:00+02:00",
-          "tree_id": "76f68a2dea5dd4b3c423781b25d0b0476fa99641",
-          "url": "https://github.com/czlonkowski/n8n-mcp/commit/08d43bd7fb816e1abb60595e1ccf0ee56318cee3"
-        },
-        "date": 1759926720930,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "sample - array sorting - small",
-            "value": 0.0136,
-            "range": "0.3096",
-            "unit": "ms",
-            "extra": "73341 ops/sec"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -1542,6 +1511,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/czlonkowski/n8n-mcp/commit/eee52a7f5379cb016273495fc3f1f6b0ad4dc5c4"
         },
         "date": 1762605671991,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "56956555+czlonkowski@users.noreply.github.com",
+            "name": "Romuald Członkowski",
+            "username": "czlonkowski"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2010d77ed85d10979895d38045326c7ee2994d0b",
+          "message": "Merge pull request #407 from czlonkowski/feat/telemetry-quick-wins-validation-errors\n\nfeat: Telemetry-driven quick wins to reduce AI agent validation errors by 30-40%",
+          "timestamp": "2025-11-08T19:09:27+01:00",
+          "tree_id": "7834dc2d3600674efa5251b04885077c5f306175",
+          "url": "https://github.com/czlonkowski/n8n-mcp/commit/2010d77ed85d10979895d38045326c7ee2994d0b"
+        },
+        "date": 1762625470818,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
