@@ -1,39 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1762625471400,
+  "lastUpdate": 1762706960584,
   "repoUrl": "https://github.com/czlonkowski/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "56956555+czlonkowski@users.noreply.github.com",
-            "name": "Romuald Członkowski",
-            "username": "czlonkowski"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "51278f52e90bdee3384d9d490bfa918e0bdd272a",
-          "message": "Merge pull request #295 from czlonkowski/feature/telemetry-docker-cloud-detection\n\nfeat: Complete startup error logging system with safety fixes (v2.18.3)",
-          "timestamp": "2025-10-09T11:21:08+02:00",
-          "tree_id": "b4ae7835d1d11264b1f11e2cd0447ab835ee00b8",
-          "url": "https://github.com/czlonkowski/n8n-mcp/commit/51278f52e90bdee3384d9d490bfa918e0bdd272a"
-        },
-        "date": 1760001779794,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "sample - array sorting - small",
-            "value": 0.0136,
-            "range": "0.3096",
-            "unit": "ms",
-            "extra": "73341 ops/sec"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -1542,6 +1511,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/czlonkowski/n8n-mcp/commit/2010d77ed85d10979895d38045326c7ee2994d0b"
         },
         "date": 1762625470818,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "56956555+czlonkowski@users.noreply.github.com",
+            "name": "Romuald Członkowski",
+            "username": "czlonkowski"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "14f3b9c12a7ecd1ff0f87e4e2de47b9c27b39cb7",
+          "message": "Merge pull request #411 from czlonkowski/feat/disabled-tools-env-var\n\nfeat: Add DISABLED_TOOLS environment variable for tool filtering (Issue #410)",
+          "timestamp": "2025-11-09T17:47:42+01:00",
+          "tree_id": "55a6d4ddc063c3618812f78e69588d6a96ea4447",
+          "url": "https://github.com/czlonkowski/n8n-mcp/commit/14f3b9c12a7ecd1ff0f87e4e2de47b9c27b39cb7"
+        },
+        "date": 1762706960174,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
