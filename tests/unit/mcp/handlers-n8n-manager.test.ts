@@ -1068,14 +1068,14 @@ describe('handlers-n8n-manager', () => {
         },
         toolsAvailability: {
           documentationTools: {
-            count: 22,
+            count: 14,
             enabled: true,
           },
           managementTools: {
-            count: 16,
+            count: 17,
             enabled: true,
           },
-          totalAvailable: 38,
+          totalAvailable: 31,
         },
       });
 

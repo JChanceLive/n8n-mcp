@@ -27,37 +27,6 @@ export const n8nDocumentationToolsFinal: ToolDefinition[] = [
     },
   },
   {
-    name: 'list_nodes',
-    description: `List n8n nodes. Common: list_nodes({limit:200}) for all, list_nodes({category:'trigger'}) for triggers. Package: "n8n-nodes-base" or "@n8n/n8n-nodes-langchain". Categories: trigger/transform/output/input.`,
-    inputSchema: {
-      type: 'object',
-      properties: {
-        package: {
-          type: 'string',
-          description: '"n8n-nodes-base" (core) or "@n8n/n8n-nodes-langchain" (AI)',
-        },
-        category: {
-          type: 'string',
-          description: 'trigger|transform|output|input|AI',
-        },
-        developmentStyle: {
-          type: 'string',
-          enum: ['declarative', 'programmatic'],
-          description: 'Usually "programmatic"',
-        },
-        isAITool: {
-          type: 'boolean',
-          description: 'Filter AI-capable nodes',
-        },
-        limit: {
-          type: 'number',
-          description: 'Max results (default 50, use 200+ for all)',
-          default: 50,
-        },
-      },
-    },
-  },
-  {
     name: 'search_nodes',
     description: `Search n8n nodes by keyword with optional real-world examples. Pass query as string. Example: query="webhook" or query="database". Returns max 20 results. Use includeExamples=true to get top 2 template configs per node.`,
     inputSchema: {
@@ -88,14 +57,6 @@ export const n8nDocumentationToolsFinal: ToolDefinition[] = [
     },
   },
   {
-    name: 'list_ai_tools',
-    description: `List 263 AI-optimized nodes. Note: ANY node can be AI tool! Connect any node to AI Agent's tool port. Community nodes need N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true.`,
-    inputSchema: {
-      type: 'object',
-      properties: {},
-    },
-  },
-  {
     name: 'get_node_documentation',
     description: `Get readable docs with examples/auth/patterns. Better than raw schema! 87% coverage. Format: "nodes-base.slack"`,
     inputSchema: {
@@ -107,14 +68,6 @@ export const n8nDocumentationToolsFinal: ToolDefinition[] = [
         },
       },
       required: ['nodeType'],
-    },
-  },
-  {
-    name: 'get_database_statistics',
-    description: `Node stats: 525 total, 263 AI tools, 104 triggers, 87% docs coverage. Verifies MCP working.`,
-    inputSchema: {
-      type: 'object',
-      properties: {},
     },
   },
   {
@@ -182,19 +135,6 @@ export const n8nDocumentationToolsFinal: ToolDefinition[] = [
         },
       },
       required: ['nodeType', 'query'],
-    },
-  },
-  {
-    name: 'list_tasks',
-    description: `List task templates by category: HTTP/API, Webhooks, Database, AI, Data Processing, Communication.`,
-    inputSchema: {
-      type: 'object',
-      properties: {
-        category: {
-          type: 'string',
-          description: 'Filter by category (optional)',
-        },
-      },
     },
   },
   {
@@ -314,53 +254,6 @@ export const n8nDocumentationToolsFinal: ToolDefinition[] = [
         },
       },
       required: ['nodeType'],
-    },
-  },
-  {
-    name: 'get_node_as_tool_info',
-    description: `How to use ANY node as AI tool. Shows requirements, use cases, examples. Works for all nodes, not just AI-marked ones.`,
-    inputSchema: {
-      type: 'object',
-      properties: {
-        nodeType: {
-          type: 'string',
-          description: 'Full node type WITH prefix: "nodes-base.slack", "nodes-base.googleSheets", etc.',
-        },
-      },
-      required: ['nodeType'],
-    },
-  },
-  {
-    name: 'list_templates',
-    description: `List all templates with minimal data (id, name, description, views, node count). Optionally include AI-generated metadata for smart filtering.`,
-    inputSchema: {
-      type: 'object',
-      properties: {
-        limit: {
-          type: 'number',
-          description: 'Number of results (1-100). Default 10.',
-          default: 10,
-          minimum: 1,
-          maximum: 100,
-        },
-        offset: {
-          type: 'number',
-          description: 'Pagination offset. Default 0.',
-          default: 0,
-          minimum: 0,
-        },
-        sortBy: {
-          type: 'string',
-          enum: ['views', 'created_at', 'name'],
-          description: 'Sort field. Default: views (popularity).',
-          default: 'views',
-        },
-        includeMetadata: {
-          type: 'boolean',
-          description: 'Include AI-generated metadata (categories, complexity, setup time, etc.). Default false.',
-          default: false,
-        },
-      },
     },
   },
   {
@@ -620,107 +513,6 @@ export const n8nDocumentationToolsFinal: ToolDefinition[] = [
         suggestions: { type: 'array', items: { type: 'string' } }
       },
       required: ['valid', 'summary']
-    },
-  },
-  {
-    name: 'validate_workflow_connections',
-    description: `Check workflow connections only: valid nodes, no cycles, proper triggers, AI tool links. Fast structure validation.`,
-    inputSchema: {
-      type: 'object',
-      properties: {
-        workflow: {
-          type: 'object',
-          description: 'The workflow JSON with nodes array and connections object.',
-        },
-      },
-      required: ['workflow'],
-      additionalProperties: false,
-    },
-    outputSchema: {
-      type: 'object',
-      properties: {
-        valid: { type: 'boolean' },
-        statistics: {
-          type: 'object',
-          properties: {
-            totalNodes: { type: 'number' },
-            triggerNodes: { type: 'number' },
-            validConnections: { type: 'number' },
-            invalidConnections: { type: 'number' }
-          }
-        },
-        errors: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              node: { type: 'string' },
-              message: { type: 'string' }
-            }
-          }
-        },
-        warnings: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              node: { type: 'string' },
-              message: { type: 'string' }
-            }
-          }
-        }
-      },
-      required: ['valid', 'statistics']
-    },
-  },
-  {
-    name: 'validate_workflow_expressions',
-    description: `Validate n8n expressions: syntax {{}}, variables ($json/$node), references. Returns errors with locations.`,
-    inputSchema: {
-      type: 'object',
-      properties: {
-        workflow: {
-          type: 'object',
-          description: 'The workflow JSON to check for expression errors.',
-        },
-      },
-      required: ['workflow'],
-      additionalProperties: false,
-    },
-    outputSchema: {
-      type: 'object',
-      properties: {
-        valid: { type: 'boolean' },
-        statistics: {
-          type: 'object',
-          properties: {
-            totalNodes: { type: 'number' },
-            expressionsValidated: { type: 'number' }
-          }
-        },
-        errors: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              node: { type: 'string' },
-              message: { type: 'string' }
-            }
-          }
-        },
-        warnings: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              node: { type: 'string' },
-              message: { type: 'string' }
-            }
-          }
-        },
-        tips: { type: 'array', items: { type: 'string' } }
-      },
-      required: ['valid', 'statistics']
     },
   },
 ];

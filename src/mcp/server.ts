@@ -837,8 +837,6 @@ export class N8NDocumentationMCPServer {
           validationResult = ToolValidation.validateNodeMinimal(args);
           break;
         case 'validate_workflow':
-        case 'validate_workflow_connections':
-        case 'validate_workflow_expressions':
           validationResult = ToolValidation.validateWorkflow(args);
           break;
       case 'search_nodes':
@@ -1015,23 +1013,14 @@ export class N8NDocumentationMCPServer {
       case 'tools_documentation':
         // No required parameters
         return this.getToolsDocumentation(args.topic, args.depth);
-      case 'list_nodes':
-        // No required parameters
-        return this.listNodes(args);
       case 'search_nodes':
         this.validateToolParams(name, args, ['query']);
         // Convert limit to number if provided, otherwise use default
         const limit = args.limit !== undefined ? Number(args.limit) || 20 : 20;
         return this.searchNodes(args.query, limit, { mode: args.mode, includeExamples: args.includeExamples });
-      case 'list_ai_tools':
-        // No required parameters
-        return this.listAITools();
       case 'get_node_documentation':
         this.validateToolParams(name, args, ['nodeType']);
         return this.getNodeDocumentation(args.nodeType);
-      case 'get_database_statistics':
-        // No required parameters
-        return this.getDatabaseStatistics();
       case 'get_node':
         this.validateToolParams(name, args, ['nodeType']);
         return this.getNode(
@@ -1047,9 +1036,6 @@ export class N8NDocumentationMCPServer {
         this.validateToolParams(name, args, ['nodeType', 'query']);
         const maxResults = args.maxResults !== undefined ? Number(args.maxResults) || 20 : 20;
         return this.searchNodeProperties(args.nodeType, args.query, maxResults);
-      case 'list_tasks':
-        // No required parameters
-        return this.listTasks(args.category);
       case 'validate_node_operation':
         this.validateToolParams(name, args, ['nodeType', 'config']);
         // Ensure config is an object
@@ -1101,16 +1087,6 @@ export class N8NDocumentationMCPServer {
       case 'get_property_dependencies':
         this.validateToolParams(name, args, ['nodeType']);
         return this.getPropertyDependencies(args.nodeType, args.config);
-      case 'get_node_as_tool_info':
-        this.validateToolParams(name, args, ['nodeType']);
-        return this.getNodeAsToolInfo(args.nodeType);
-      case 'list_templates':
-        // No required params
-        const listLimit = Math.min(Math.max(Number(args.limit) || 10, 1), 100);
-        const listOffset = Math.max(Number(args.offset) || 0, 0);
-        const sortBy = args.sortBy || 'views';
-        const includeMetadata = Boolean(args.includeMetadata);
-        return this.listTemplates(listLimit, listOffset, sortBy, includeMetadata);
       case 'list_node_templates':
         this.validateToolParams(name, args, ['nodeTypes']);
         const templateLimit = Math.min(Math.max(Number(args.limit) || 10, 1), 100);
@@ -1147,13 +1123,7 @@ export class N8NDocumentationMCPServer {
       case 'validate_workflow':
         this.validateToolParams(name, args, ['workflow']);
         return this.validateWorkflow(args.workflow, args.options);
-      case 'validate_workflow_connections':
-        this.validateToolParams(name, args, ['workflow']);
-        return this.validateWorkflowConnections(args.workflow);
-      case 'validate_workflow_expressions':
-        this.validateToolParams(name, args, ['workflow']);
-        return this.validateWorkflowExpressions(args.workflow);
-      
+
       // n8n Management Tools (if API is configured)
       case 'n8n_create_workflow':
         this.validateToolParams(name, args, ['name', 'nodes', 'connections']);
@@ -1205,14 +1175,11 @@ export class N8NDocumentationMCPServer {
         this.validateToolParams(name, args, ['id']);
         return n8nHandlers.handleDeleteExecution(args, this.instanceContext);
       case 'n8n_health_check':
-        // No required parameters
+        // No required parameters - supports mode='status' (default) or mode='diagnostic'
+        if (args.mode === 'diagnostic') {
+          return n8nHandlers.handleDiagnostic({ params: { arguments: args } }, this.instanceContext);
+        }
         return n8nHandlers.handleHealthCheck(this.instanceContext);
-      case 'n8n_list_available_tools':
-        // No required parameters
-        return n8nHandlers.handleListAvailableTools(this.instanceContext);
-      case 'n8n_diagnostic':
-        // No required parameters
-        return n8nHandlers.handleDiagnostic({ params: { arguments: args } }, this.instanceContext);
       case 'n8n_workflow_versions':
         this.validateToolParams(name, args, ['mode']);
         return n8nHandlers.handleWorkflowVersions(args, this.repository!, this.instanceContext);

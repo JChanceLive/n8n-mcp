@@ -436,29 +436,19 @@ Examples:
   // System Tools
   {
     name: 'n8n_health_check',
-    description: `Check n8n instance health and API connectivity. Returns status and available features.`,
-    inputSchema: {
-      type: 'object',
-      properties: {}
-    }
-  },
-  {
-    name: 'n8n_list_available_tools',
-    description: `List available n8n tools and capabilities.`,
-    inputSchema: {
-      type: 'object',
-      properties: {}
-    }
-  },
-  {
-    name: 'n8n_diagnostic',
-    description: `Diagnose n8n API config. Shows tool status, API connectivity, env vars. Helps troubleshoot missing tools.`,
+    description: `Check n8n instance health and API connectivity. Use mode='diagnostic' for detailed troubleshooting with env vars and tool status.`,
     inputSchema: {
       type: 'object',
       properties: {
+        mode: {
+          type: 'string',
+          enum: ['status', 'diagnostic'],
+          description: 'Mode: "status" (default) for quick health check, "diagnostic" for detailed debug info including env vars and tool status',
+          default: 'status'
+        },
         verbose: {
           type: 'boolean',
-          description: 'Include detailed debug information (default: false)'
+          description: 'Include extra details in diagnostic mode (default: false)'
         }
       }
     }
