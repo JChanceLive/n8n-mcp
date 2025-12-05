@@ -1,39 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1764933475931,
+  "lastUpdate": 1764938407766,
   "repoUrl": "https://github.com/czlonkowski/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "56956555+czlonkowski@users.noreply.github.com",
-            "name": "Romuald Członkowski",
-            "username": "czlonkowski"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "c76ffd9fb182a75a64642d73118b112adfa12b96",
-          "message": "fix: sticky notes validation - eliminate false positives in workflow updates (#350)\n\nFixed critical bug where sticky notes (UI-only annotation nodes) incorrectly\ntriggered \"disconnected node\" validation errors when updating workflows via\nMCP tools (n8n_update_partial_workflow, n8n_update_full_workflow).\n\nProblem:\n- Workflows with sticky notes failed validation with \"Node is disconnected\" errors\n- n8n-validation.ts lacked sticky note exclusion logic\n- workflow-validator.ts had correct logic but as private method\n- Code duplication led to divergent behavior\n\nSolution:\n1. Created shared utility module (src/utils/node-classification.ts)\n   - isStickyNote(): Identifies all sticky note type variations\n   - isTriggerNode(): Identifies trigger nodes\n   - isNonExecutableNode(): Identifies UI-only nodes\n   - requiresIncomingConnection(): Determines connection requirements\n\n2. Updated n8n-validation.ts to use shared utilities\n   - Fixed disconnected nodes check to skip non-executable nodes\n   - Added validation for workflows with only sticky notes\n   - Fixed multi-node connection check to exclude sticky notes\n\n3. Updated workflow-validator.ts to use shared utilities\n   - Removed private isStickyNote() method (8 locations)\n   - Eliminated code duplication\n\nTesting:\n- Created comprehensive test suites (54 new tests, 100% coverage)\n- Tested with n8n-mcp-tester agent using real n8n instance\n- All test scenarios passed including regression tests\n- Validated against real workflows with sticky notes\n\nImpact:\n- Sticky notes no longer block workflow updates\n- Matches n8n UI behavior exactly\n- Zero regressions in existing validation\n- All MCP workflow tools now work correctly with annotated workflows\n\nFiles Changed:\n- NEW: src/utils/node-classification.ts\n- NEW: tests/unit/utils/node-classification.test.ts (44 tests)\n- NEW: tests/unit/services/n8n-validation-sticky-notes.test.ts (10 tests)\n- MODIFIED: src/services/n8n-validation.ts (lines 198-259)\n- MODIFIED: src/services/workflow-validator.ts (8 locations)\n- MODIFIED: tests/unit/validation-fixes.test.ts\n- MODIFIED: CHANGELOG.md (v2.20.8 entry)\n- MODIFIED: package.json (version bump to 2.20.8)\n\nTest Results:\n- Unit tests: 54 new tests passing, 100% coverage on utilities\n- Integration tests: All 10 sticky notes validation tests passing\n- Regression tests: Zero failures in existing test suite\n- Real-world testing: 4 test workflows validated successfully\n\nConceived by Romuald Członkowski - www.aiadvisors.pl/en",
-          "timestamp": "2025-10-22T17:58:13+02:00",
-          "tree_id": "1f3c678254a0d92f544e684ff04aa889d651ee7f",
-          "url": "https://github.com/czlonkowski/n8n-mcp/commit/c76ffd9fb182a75a64642d73118b112adfa12b96"
-        },
-        "date": 1761148815471,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "sample - array sorting - small",
-            "value": 0.0136,
-            "range": "0.3096",
-            "unit": "ms",
-            "extra": "73341 ops/sec"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -1540,6 +1509,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/czlonkowski/n8n-mcp/commit/90407f845d61028d83c4c084e9a5f6b466a5558c"
         },
         "date": 1764933475477,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "56956555+czlonkowski@users.noreply.github.com",
+            "name": "Romuald Członkowski",
+            "username": "czlonkowski"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "60479e0eb47a7c83e77f36e2667a73e2e3ec115a",
+          "message": "test: update tests for v2.28.5 behavior changes (v2.28.6) (#470)\n\n- Update n8n-version tests: 'v' prefix now supported in version strings\n- Update n8n-validation tests: empty settings now return minimal defaults\n  { executionOrder: 'v1' } instead of {} to avoid API rejection (Issue #431)\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-authored-by: Romuald Członkowski <romualdczlonkowski@MacBook-Pro-Romuald.local>\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-12-05T13:38:06+01:00",
+          "tree_id": "399afed181c7f2e2552ec90c91b0418f9dcc6382",
+          "url": "https://github.com/czlonkowski/n8n-mcp/commit/60479e0eb47a7c83e77f36e2667a73e2e3ec115a"
+        },
+        "date": 1764938407093,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
