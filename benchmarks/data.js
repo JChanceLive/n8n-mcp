@@ -1,39 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768322967774,
+  "lastUpdate": 1768991083681,
   "repoUrl": "https://github.com/czlonkowski/n8n-mcp",
   "entries": {
     "n8n-mcp Benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "56956555+czlonkowski@users.noreply.github.com",
-            "name": "Romuald Członkowski",
-            "username": "czlonkowski"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "5575630711733f121edf298a64c94ab971051243",
-          "message": "fix: eliminate stack overflow in session removal (#427) (#428)\n\nCritical bug fix for production crashes during session cleanup.\n\n**Root Cause:**\nInfinite recursion caused by circular event handler chain:\n- removeSession() called transport.close()\n- transport.close() triggered onclose event handler\n- onclose handler called removeSession() again\n- Loop continued until stack overflow\n\n**Solution:**\nDelete transport from registry BEFORE closing to break circular reference:\n1. Store transport reference\n2. Delete from this.transports first\n3. Close transport after deletion\n4. When onclose fires, transport no longer found, no recursion\n\n**Impact:**\n- Eliminates \"RangeError: Maximum call stack size exceeded\" errors\n- Fixes session cleanup crashes every 5 minutes in production\n- Prevents potential memory leaks from failed cleanup\n\n**Testing:**\n- Added regression test for infinite recursion prevention\n- All 39 session management tests pass\n- Build and typecheck succeed\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\nCloses #427",
-          "timestamp": "2025-11-18T17:41:17+01:00",
-          "tree_id": "805eca371f4ec079e7e97a0a2badeeecd7af28a2",
-          "url": "https://github.com/czlonkowski/n8n-mcp/commit/5575630711733f121edf298a64c94ab971051243"
-        },
-        "date": 1763484189965,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "sample - array sorting - small",
-            "value": 0.0136,
-            "range": "0.3096",
-            "unit": "ms",
-            "extra": "73341 ops/sec"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -1530,6 +1499,37 @@ window.BENCHMARK_DATA = {
           "url": "https://github.com/czlonkowski/n8n-mcp/commit/974a9fb3492fe2c4984ee0549085d531cdc6242a"
         },
         "date": 1768322967350,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "sample - array sorting - small",
+            "value": 0.0136,
+            "range": "0.3096",
+            "unit": "ms",
+            "extra": "73341 ops/sec"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "56956555+czlonkowski@users.noreply.github.com",
+            "name": "Romuald Członkowski",
+            "username": "czlonkowski"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0f15b82f1e5496b7b0f88910a9f61c152ceeb327",
+          "message": "chore: update n8n to 2.4.4 (#543)\n\n* chore: update n8n to 2.4.4 and bump version to 2.33.3\n\n- Updated n8n from 2.2.3 to 2.4.4\n- Updated n8n-core from 2.2.2 to 2.4.2\n- Updated n8n-workflow from 2.2.2 to 2.4.2\n- Updated @n8n/n8n-nodes-langchain from 2.2.2 to 2.4.3\n- Added new `icon` NodePropertyType (now 23 types total)\n- Rebuilt node database with 803 nodes (541 from n8n-nodes-base, 262 from @n8n/n8n-nodes-langchain)\n- Updated README badge with new n8n version\n- Updated CHANGELOG with dependency changes\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: update n8n-workflow version in Dockerfile for icon type support\n\nThe Docker build was using n8n-workflow@^1.96.0 which doesn't have the new\n'icon' NodePropertyType. Updated to n8n-workflow@^2.4.2 to match the project's\npackage.json version.\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: update comments to reflect 23 NodePropertyTypes\n\n- Updated test comment from '22 standard types' to '23 standard types'\n- Updated header comment from n8n-workflow v1.120.3 to v2.4.2\n\nConceived by Romuald Członkowski - https://www.aiadvisors.pl/en\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-01-21T11:22:26+01:00",
+          "tree_id": "5b495f9a0c34a9a03922419c684a3b745f15d1ad",
+          "url": "https://github.com/czlonkowski/n8n-mcp/commit/0f15b82f1e5496b7b0f88910a9f61c152ceeb327"
+        },
+        "date": 1768991083028,
         "tool": "customSmallerIsBetter",
         "benches": [
           {
