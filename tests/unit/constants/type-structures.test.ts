@@ -48,7 +48,7 @@ describe('TYPE_STRUCTURES', () => {
 			}
 		});
 
-		it('should not have extra types beyond the 22 standard types', () => {
+		it('should not have extra types beyond the 23 standard types', () => {
 			const definedTypes = Object.keys(TYPE_STRUCTURES);
 			const extraTypes = definedTypes.filter((type) => !ALL_PROPERTY_TYPES.includes(type as NodePropertyTypes));
 

@@ -5,7 +5,7 @@
  * These structures define the expected data format, JavaScript type,
  * validation rules, and examples for each property type.
  *
- * Based on n8n-workflow v1.120.3 NodePropertyTypes
+ * Based on n8n-workflow v2.4.2 NodePropertyTypes
  *
  * @module constants/type-structures
  * @since 2.23.0
