@@ -14,6 +14,7 @@ const mockReadFileSync = vi.mocked(readFileSync);
 describe('UI Meta Injection Logic', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    UIAppRegistry.reset();
   });
 
   describe('when HTML is loaded', () => {
@@ -71,6 +72,27 @@ describe('UI Meta Injection Logic', () => {
 
       expect(mcpResponse._meta).toBeUndefined();
     });
+
+    it('should produce _meta with exact shape { ui: { app: string } }', () => {
+      const uiApp = UIAppRegistry.getAppForTool('n8n_create_workflow')!;
+      const meta = { ui: { app: uiApp.config.uri } };
+
+      expect(meta).toEqual({
+        ui: {
+          app: 'n8n-mcp://ui/operation-result',
+        },
+      });
+      expect(Object.keys(meta)).toEqual(['ui']);
+      expect(Object.keys(meta.ui)).toEqual(['app']);
+      expect(typeof meta.ui.app).toBe('string');
+    });
+
+    it('should produce _meta.ui.app that matches the config uri', () => {
+      const uiApp = UIAppRegistry.getAppForTool('validate_node')!;
+      const meta = { ui: { app: uiApp.config.uri } };
+      expect(meta.ui.app).toBe(uiApp.config.uri);
+      expect(meta.ui.app).toBe('n8n-mcp://ui/validation-summary');
+    });
   });
 
   describe('when HTML is not loaded', () => {
@@ -83,6 +105,40 @@ describe('UI Meta Injection Logic', () => {
       const uiApp = UIAppRegistry.getAppForTool('n8n_create_workflow');
       expect(uiApp).not.toBeNull();
       expect(uiApp!.html).toBeNull();
+
+      const mcpResponse: any = {
+        content: [{ type: 'text', text: 'result' }],
+      };
+
+      if (uiApp && uiApp.html) {
+        mcpResponse._meta = { ui: { app: uiApp.config.uri } };
+      }
+
+      expect(mcpResponse._meta).toBeUndefined();
+    });
+
+    it('should NOT add _meta.ui for validation tools without HTML', () => {
+      const uiApp = UIAppRegistry.getAppForTool('validate_node');
+      expect(uiApp).not.toBeNull();
+      expect(uiApp!.html).toBeNull();
+
+      const mcpResponse: any = {
+        content: [{ type: 'text', text: 'result' }],
+      };
+
+      if (uiApp && uiApp.html) {
+        mcpResponse._meta = { ui: { app: uiApp.config.uri } };
+      }
+
+      expect(mcpResponse._meta).toBeUndefined();
+    });
+  });
+
+  describe('when registry has not been loaded at all', () => {
+    it('should NOT add _meta because getAppForTool returns null', () => {
+      // Registry never loaded - reset() was called in beforeEach
+      const uiApp = UIAppRegistry.getAppForTool('n8n_create_workflow');
+      expect(uiApp).toBeNull();
 
       const mcpResponse: any = {
         content: [{ type: 'text', text: 'result' }],
@@ -119,6 +175,40 @@ describe('UI Meta Injection Logic', () => {
       expect(mcpResponse.structuredContent.workflowId).toBe('123');
       expect(mcpResponse._meta).toBeDefined();
       expect(mcpResponse._meta.ui.app).toBe('n8n-mcp://ui/operation-result');
+    });
+
+    it('should not overwrite existing _meta properties when merging', () => {
+      const uiApp = UIAppRegistry.getAppForTool('n8n_create_workflow');
+
+      const mcpResponse: any = {
+        content: [{ type: 'text', text: 'result' }],
+        _meta: { existingProp: 'value' },
+      };
+
+      if (uiApp && uiApp.html) {
+        mcpResponse._meta = { ...mcpResponse._meta, ui: { app: uiApp.config.uri } };
+      }
+
+      expect(mcpResponse._meta.existingProp).toBe('value');
+      expect(mcpResponse._meta.ui.app).toBe('n8n-mcp://ui/operation-result');
+    });
+
+    it('should work with responses that have both structuredContent and existing _meta', () => {
+      const uiApp = UIAppRegistry.getAppForTool('validate_workflow');
+
+      const mcpResponse: any = {
+        content: [{ type: 'text', text: 'validation ok' }],
+        structuredContent: { valid: true, errors: [] },
+        _meta: { timing: 42 },
+      };
+
+      if (uiApp && uiApp.html) {
+        mcpResponse._meta = { ...mcpResponse._meta, ui: { app: uiApp.config.uri } };
+      }
+
+      expect(mcpResponse.structuredContent.valid).toBe(true);
+      expect(mcpResponse._meta.timing).toBe(42);
+      expect(mcpResponse._meta.ui.app).toBe('n8n-mcp://ui/validation-summary');
     });
   });
 });

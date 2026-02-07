@@ -57,4 +57,54 @@ describe('UI_APP_CONFIGS', () => {
     const uniquePatterns = new Set(allPatterns);
     expect(uniquePatterns.size).toBe(allPatterns.length);
   });
+
+  it('should not have duplicate tool patterns within a single config', () => {
+    for (const config of UI_APP_CONFIGS) {
+      const unique = new Set(config.toolPatterns);
+      expect(unique.size).toBe(config.toolPatterns.length);
+    }
+  });
+
+  it('should have consistent mimeType of text/html', () => {
+    for (const config of UI_APP_CONFIGS) {
+      expect(config.mimeType).toBe('text/html');
+    }
+  });
+
+  it('should have URIs that start with the n8n-mcp://ui/ scheme', () => {
+    for (const config of UI_APP_CONFIGS) {
+      expect(config.uri).toMatch(/^n8n-mcp:\/\/ui\//);
+    }
+  });
+
+  // Regression: verify expected configs are present
+  it('should contain the operation-result config', () => {
+    const config = UI_APP_CONFIGS.find(c => c.id === 'operation-result');
+    expect(config).toBeDefined();
+    expect(config!.displayName).toBe('Operation Result');
+    expect(config!.toolPatterns).toContain('n8n_create_workflow');
+    expect(config!.toolPatterns).toContain('n8n_update_full_workflow');
+    expect(config!.toolPatterns).toContain('n8n_delete_workflow');
+    expect(config!.toolPatterns).toContain('n8n_test_workflow');
+    expect(config!.toolPatterns).toContain('n8n_deploy_template');
+  });
+
+  it('should contain the validation-summary config', () => {
+    const config = UI_APP_CONFIGS.find(c => c.id === 'validation-summary');
+    expect(config).toBeDefined();
+    expect(config!.displayName).toBe('Validation Summary');
+    expect(config!.toolPatterns).toContain('validate_node');
+    expect(config!.toolPatterns).toContain('validate_workflow');
+    expect(config!.toolPatterns).toContain('n8n_validate_workflow');
+  });
+
+  it('should have exactly 2 configs', () => {
+    expect(UI_APP_CONFIGS.length).toBe(2);
+  });
+
+  it('should have IDs that are valid URI path segments (no spaces or special chars)', () => {
+    for (const config of UI_APP_CONFIGS) {
+      expect(config.id).toMatch(/^[a-z0-9-]+$/);
+    }
+  });
 });

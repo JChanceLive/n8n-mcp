@@ -59,4 +59,11 @@ export class UIAppRegistry {
     if (!this.loaded) return [];
     return Array.from(this.entries.values());
   }
+
+  /** Reset registry state. Intended for testing only. */
+  static reset(): void {
+    this.entries.clear();
+    this.toolIndex.clear();
+    this.loaded = false;
+  }
 }
